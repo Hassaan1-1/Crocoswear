@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CrocosWear | Elite Sportswear</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        
+        .font-display {
+            font-family: 'Bebas Neue', sans-serif;
+        }
+        
+        /* Ultra Clear Tag - Small but crisp */
+        .crocos-tag {
+            font-size: 0.65rem;
+            letter-spacing: 0.2em;
+            font-weight: 800;
+            text-transform: uppercase;
+            opacity: 0.9;
+            transition: all 0.3s ease;
+        }
+        
+        .crocos-tag:hover {
+            opacity: 1;
+            letter-spacing: 0.25em;
+        }
+        
+        /* Grain texture overlay */
+        .grain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+        
+        /* Smooth scroll behavior */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0a0a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        
+        /* Animation classes */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Image hover zoom */
+        .img-zoom {
+            transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        
+        .group:hover .img-zoom {
+            transform: scale(1.08);
+        }
+        
+        /* Stagger animation delays */
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+        .delay-400 { transition-delay: 400ms; }
+        
+        /* Neon glow effect */
+        .neon-glow {
+            box-shadow: 0 0 20px rgba(57, 255, 20, 0.3);
+        }
+        
+        /* Text stroke effect */
+        .text-stroke {
+            -webkit-text-stroke: 1px rgba(255,255,255,0.3);
+            color: transparent;
+        }
+        
+        /* Magnetic button effect */
+        .magnetic-btn {
+            transition: transform 0.3s ease;
+        }
+        
+        /* Parallax container */
+        .parallax-wrapper {
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* Mobile menu */
+        .mobile-menu {
+            transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .mobile-menu.open {
+            transform: translateX(0);
+        }
+        
+        /* Product card shine effect */
+        .shine {
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.1), transparent);
+            transform: skewX(-25deg);
+            transition: left 0.7s;
+        }
+        
+        .group:hover .shine {
+            left: 150%;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Grain Overlay -->
+    <div class="grain"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-40 bg-black/80 backdrop-blur-md border-b border-white/10 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo with Ultra Clear Tag -->
+                <div class="flex flex-col items-start">
+                    <a href="#" class="font-display text-3xl tracking-wider text-white hover:text-gray-300 transition-colors">
+                        CROCOS
+                    </a>
+                    <span class="crocos-tag text-white/80 mt-0.5">crocoswear</span>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#collections" class="text-sm font-medium text-gray-300 hover:text-white transition-colors">Collections</a>
+                    <a href="#jackets" class="text-sm font-medium text-gray-300 hover:text-white transition-colors">Jackets</a>
+                    <a href="#outfits" class="text-sm font-medium text-gray-300 hover:text-white transition-colors">Sport Outfits</a>
+                    <a href="#about" class="text-sm font-medium text-gray-300 hover:text-white transition-colors">About</a>
+                    <button class="magnetic-btn px-6 py-2 bg-white text-black font-semibold text-sm rounded-full hover:bg-gray-200 transition-colors">
+                        Shop Now
+                    </button>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden text-white" onclick="toggleMenu()">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="mobile-menu fixed top-0 right-0 w-full h-screen bg-black z-50 md:hidden" id="mobileMenu">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-12">
+                    <span class="font-display text-2xl">CROCOS</span>
+                    <button onclick="toggleMenu()" class="text-white">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="flex flex-col space-y-6">
+                    <a href="#collections" onclick="toggleMenu()" class="text-2xl font-display tracking-wider">Collections</a>
+                    <a href="#jackets" onclick="toggleMenu()" class="text-2xl font-display tracking-wider">Jackets</a>
+                    <a href="#outfits" onclick="toggleMenu()" class="text-2xl font-display tracking-wider">Sport Outfits</a>
+                    <a href="#about" onclick="toggleMenu()" class="text-2xl font-display tracking-wider">About</a>
+                </div>
+                <div class="mt-12">
+                    <span class="crocos-tag text-white/60">crocoswear</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative h-screen flex items-center justify-center overflow-hidden">
+        <!-- Background Image with Parallax -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=1920&q=80" 
+                 alt="Athletic background" 
+                 class="w-full h-full object-cover opacity-60 scale-110"
+                 id="heroImage">
+            <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black"></div>
+        </div>
+
+        <!-- Hero Content -->
+        <div class="relative z-10 text-center px-4 max-w-5xl mx-auto">
+            <div class="mb-4 fade-up">
+                <span class="crocos-tag text-white/90 tracking-[0.3em]">crocoswear</span>
+            </div>
+            <h1 class="font-display text-6xl md:text-8xl lg:text-9xl tracking-tight mb-6 fade-up delay-100 leading-none">
+                UNLEASH<br>
+                <span class="text-stroke">THE BEAST</span>
+            </h1>
+            <p class="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto mb-10 fade-up delay-200 font-light">
+                Elite sportswear engineered for predators. Performance meets precision in every stitch.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center fade-up delay-300">
+                <button class="magnetic-btn px-8 py-4 bg-white text-black font-bold rounded-full hover:bg-gray-200 transition-all transform hover:scale-105">
+                    Explore Collection
+                </button>
+                <button class="magnetic-btn px-8 py-4 border border-white/30 text-white font-semibold rounded-full hover:bg-white/10 transition-all">
+                    View Lookbook
+                </button>
+            </div>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <svg class="w-6 h-6 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Featured Collections -->
+    <section id="collections" class="py-24 px-4 sm:px-6 lg:px-8 bg-black relative">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-16 fade-up">
+                <div>
+                    <span class="crocos-tag text-white/60 mb-2 block">crocoswear</span>
+                    <h2 class="font-display text-5xl md:text-6xl">NEW ARRIVALS</h2>
+                </div>
+                <a href="#" class="text-sm font-semibold border-b border-white pb-1 hover:text-gray-300 transition-colors mt-4 md:mt-0">
+                    VIEW ALL PRODUCTS
+                </a>
+            </div>
+
+            <!-- Product Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Product 1 -->
+                <div class="group relative overflow-hidden rounded-2xl bg-gray-900 cursor-pointer fade-up delay-100">
+                    <div class="aspect-[4/5] overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1556906781-9a412961c28c?w=800&q=80" 
+                             alt="Performance Jacket" 
+                             class="w-full h-full object-cover img-zoom">
+                        <div class="shine"></div>
+                        <div class="absolute top-4 right-4 bg-white text-black text-xs font-bold px-3 py-1 rounded-full">
+                            NEW
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-bold">Apex Predator Jacket</h3>
+                            <span class="text-lg font-semibold">$189</span>
+                        </div>
+                        <p class="text-gray-400 text-sm mb-4">Water-resistant shell with thermal lining</p>
+                        <div class="flex gap-2">
+                            <span class="w-6 h-6 rounded-full bg-black border border-gray-600 cursor-pointer hover:scale-110 transition-transform"></span>
+                            <span class="w-6 h-6 rounded-full bg-gray-700 border border-gray-600 cursor-pointer hover:scale-110 transition-transform"></span>
+                            <span class="w-6 h-6 rounded-full bg-green-600 border border-gray-600 cursor-pointer hover:scale-110 transition-transform"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="group relative overflow-hidden rounded-2xl bg-gray-900 cursor-pointer fade-up delay-200">
+                    <div class="aspect-[4/5] overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=800&q=80" 
+                             alt="Training Set" 
+                             class="w-full h-full object-cover img-zoom">
+                        <div class="shine"></div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-bold">Stealth Training Set</h3>
+                            <span class="text-lg font-semibold">$145</span>
+                        </div>
+                        <p class="text-gray-400 text-sm mb-4">Compression fit with moisture control</p>
+                        <div class="flex gap-2">
+                            <span class="w-6 h-6 rounded-full bg-black border border-gray-600 cursor-pointer hover:scale-110 transition-transform"></span>
+                            <span class="w-6 h-6 rounded-full bg-blue-600 border border-gray-600 cursor-pointer hover:scale-110 transition-transform"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="group relative overflow-hidden rounded-2xl bg-gray-900 cursor-pointer fade-up delay-300">
+                    <div class="aspect-[4/5] overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&q=80" 
+                             alt="Running Jacket" 
+                             class="w-full h-full object-cover img-zoom">
+                        <div class="shine"></div>
+                        <div class="absolute top-4 right-4 bg-green-500 text-black text-xs font-bold px-3 py-1 rounded-full">
+                            BESTSELLER
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-bold">Velocity Windbreaker</h3>
+                            <span class="text-lg font-semibold">$165</span>
+                        </div>
+                        <p class="text-gray-400 text-sm mb-4">Ultra-lightweight with reflective details</p>
+                        <div class="flex gap-2">
+                            <span class="w-6 h-6 rounded-full bg-black border border-gray-600 cursor-pointer hover:scale-110 transition-transform"></span>
+                            <span class="w-6 h-6 rounded-full bg-yellow-500 border border-gray-600 cursor-pointer hover:scale-110 transition-transform"></span>
+                            <span class="w-6 h-6 rounded-full bg-red-600 border border-gray-600 cursor-pointer hover:scale-110 transition-transform"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Category Showcase - Jackets -->
+    <section id="jackets" class="py-24 bg-neutral-900 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-20">
+            <img src="https://images.unsplash.com/photo-1544923246-77307dd628b9?w=1920&q=80" 
+                 alt="Texture" 
+                 class="w-full h-full object-cover grayscale">
+        </div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div class="fade-up">
+                    <span class="crocos-tag text-white/60 mb-4 block">crocoswear</span>
+                    <h2 class="font-display text-6xl md:text-7xl mb-6">TACTICAL<br>JACKETS</h2>
+                    <p class="text-gray-300 text-lg mb-8 leading-relaxed">
+                        Engineered for extreme conditions. Our tactical jacket collection combines military-grade durability with athletic aesthetics. Weather-resistant, breathable, and built to move.
+                    </p>
+                    <ul class="space-y-3 mb-8 text-gray-400">
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            GORE-TEX® waterproof technology
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            Thermal regulation system
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            360° reflective safety zones
+                        </li>
+                    </ul>
+                    <button class="magnetic-btn px-8 py-4 bg-white text-black font-bold rounded-full hover:bg-gray-200 transition-all">
+                        Shop Jackets
+                    </button>
+                </div>
+                
+                <div class="relative fade-up delay-200">
+                    <div class="aspect-[3/4] rounded-2xl overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800&q=80" 
+                             alt="Tactical Jacket" 
+                             class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
+                    </div>
+                    <!-- Floating Badge -->
+                    <div class="absolute -bottom-6 -left-6 bg-white text-black p-6 rounded-2xl shadow-2xl">
+                        <div class="crocos-tag text-black/60 mb-1">crocoswear</div>
+                        <div class="text-3xl font-bold">2024</div>
+                        <div class="text-sm text-gray-600">Collection</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sport Outfits Grid -->
+    <section id="outfits" class="py-24 bg-black">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-up">
+                <span class="crocos-tag text-white/60 mb-2 block">crocoswear</span>
+                <h2 class="font-display text-6xl md:text-7xl mb-4">COMPLETE OUTFITS</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">Curated sets designed for peak performance. Mix and match or take the complete look.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Outfit 1 -->
+                <div class="group relative overflow-hidden rounded-3xl aspect-[16/10] cursor-pointer fade-up delay-100">
+                    <img src="https://images.unsplash.com/photo-1518459031867-a89b944bffe4?w=1200&q=80" 
+                         alt="Running Outfit" 
+                         class="w-full h-full object-cover img-zoom">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                    <div class="absolute bottom-0 left-0 p-8 w-full">
+                        <div class="flex justify-between items-end">
+                            <div>
+                                <span class="crocos-tag text-white/70 mb-2 block">crocoswear</span>
+                                <h3 class="text-3xl font-bold mb-2">Urban Runner Set</h3>
+                                <p class="text-gray-300">Lightweight performance gear for city athletes</p>
+                            </div>
+                            <button class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-black hover:scale-110 transition-transform">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Outfit 2 -->
+                <div class="group relative overflow-hidden rounded-3xl aspect-[16/10] cursor-pointer fade-up delay-200">
+                    <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1200&q=80" 
+                         alt="Gym Outfit" 
+                         class="w-full h-full object-cover img-zoom">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                    <div class="absolute bottom-0 left-0 p-8 w-full">
+                        <div class="flex justify-between items-end">
+                            <div>
+                                <span class="crocos-tag text-white/70 mb-2 block">crocoswear</span>
+                                <h3 class="text-3xl font-bold mb-2">Power Lift Set</h3>
+                                <p class="text-gray-300">Compression technology for maximum output</p>
+                            </div>
+                            <button class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-black hover:scale-110 transition-transform">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Outfit 3 -->
+                <div class="group relative overflow-hidden rounded-3xl aspect-[16/10] cursor-pointer fade-up delay-300">
+                    <img src="https://images.unsplash.com/photo-1571731956672-f2b94d7dd0cb?w=1200&q=80" 
+                         alt="Yoga Outfit" 
+                         class="w-full h-full object-cover img-zoom">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                    <div class="absolute bottom-0 left-0 p-8 w-full">
+                        <div class="flex justify-between items-end">
+                            <div>
+                                <span class="crocos-tag text-white/70 mb-2 block">crocoswear</span>
+                                <h3 class="text-3xl font-bold mb-2">Flex Flow Set</h3>
+                                <p class="text-gray-300">Ultimate flexibility for yoga and pilates</p>
+                            </div>
+                            <button class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-black hover:scale-110 transition-transform">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Outfit 4 -->
+                <div class="group relative overflow-hidden rounded-3xl aspect-[16/10] cursor-pointer fade-up delay-400">
+                    <img src="https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=1200&q=80" 
+                         alt="Outdoor Outfit" 
+                         class="w-full h-full object-cover img-zoom">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                    <div class="absolute bottom-0 left-0 p-8 w-full">
+                        <div class="flex justify-between items-end">
+                            <div>
+                                <span class="crocos-tag text-white/70 mb-2 block">crocoswear</span>
+                                <h3 class="text-3xl font-bold mb-2">Trail Blazer Set</h3>
+                                <p class="text-gray-300">All-terrain durability for outdoor dominance</p>
+                            </div>
+                            <button class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-black hover:scale-110 transition-transform">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features/Specs Section -->
+    <section class="py-24 bg-neutral-900 border-y border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div class="fade-up delay-100">
+                    <div class="w-16 h-16 mx-auto mb-4 bg-white/5 rounded-full flex items-center justify-center">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                    </div>
+                    <h4 class="font-bold mb-2">Performance Tech</h4>
+                    <p class="text-sm text-gray-400">Advanced moisture-wicking fabrics</p>
+                </div>
+                <div class="fade-up delay-200">
+                    <div class="w-16 h-16 mx-auto mb-4 bg-white/5 rounded-full flex items-center justify-center">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                        </svg>
+                    </div>
+                    <h4 class="font-bold mb-2">Durability</h4>
+                    <p class="text-sm text-gray-400">Reinforced stress points</p>
+                </div>
+                <div class="fade-up delay-300">
+                    <div class="w-16 h-16 mx-auto mb-4 bg-white/5 rounded-full flex items-center justify-center">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <h4 class="font-bold mb-2">Sustainable</h4>
+                    <p class="text-sm text-gray-400">Recycled materials used</p>
+                </div>
+                <div class="fade-up delay-400">
+                    <div class="w-16 h-16 mx-auto mb-4 bg-white/5 rounded-full flex items-center justify-center">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <h4 class="font-bold mb-2">24/7 Support</h4>
+                    <p class="text-sm text-gray-400">Always here to help</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About/Brand Section -->
+    <section id="about" class="py-32 bg-black relative overflow-hidden">
+        <div class="absolute inset-0 flex items-center justify-center opacity-5 pointer-events-none">
+            <span class="font-display text-[20rem] leading-none">CROCOS</span>
+        </div>
+        
+        <div class="max-w-4xl mx-auto px-4 text-center relative z-10 fade-up">
+            <span class="crocos-tag text-white/60 mb-6 block tracking-[0.4em]">crocoswear</span>
+            <h2 class="font-display text-5xl md:text-7xl mb-8 leading-tight">
+                BUILT FOR THOSE<br>
+                WHO HUNT
+            </h2>
+            <p class="text-xl text-gray-300 mb-12 leading-relaxed">
+                CrocosWear isn't just clothing—it's armor for the modern athlete. Born from the intersection of street culture and high-performance sportswear, we create pieces that dominate both the gym and the streets. Every stitch, every fabric choice, every design detail is engineered for predators.
+            </p>
+            <div class="flex justify-center gap-8 text-sm font-semibold">
+                <div class="text-center">
+                    <div class="text-3xl font-display text-white mb-1">50K+</div>
+                    <div class="text-gray-500">Athletes</div>
+                </div>
+                <div class="w-px bg-white/20"></div>
+                <div class="text-center">
+                    <div class="text-3xl font-display text-white mb-1">120+</div>
+                    <div class="text-gray-500">Products</div>
+                </div>
+                <div class="w-px bg-white/20"></div>
+                <div class="text-center">
+                    <div class="text-3xl font-display text-white mb-1">15</div>
+                    <div class="text-gray-500">Countries</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="py-24 bg-white text-black">
+        <div class="max-w-4xl mx-auto px-4 text-center fade-up">
+            <span class="crocos-tag text-black/60 mb-4 block">crocoswear</span>
+            <h2 class="font-display text-5xl md:text-6xl mb-6 text-black">JOIN THE PACK</h2>
+            <p class="text-gray-600 mb-8 max-w-xl mx-auto">
+                Subscribe for early access to drops, exclusive offers, and training tips from elite athletes.
+            </p>
+            <form class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto" onsubmit="event.preventDefault(); alert('Welcome to the pack!');">
+                <input type="email" 
+                       placeholder="Enter your email" 
+                       class="flex-1 px-6 py-4 bg-gray-100 border-0 rounded-full focus:outline-none focus:ring-2 focus:ring-black text-black placeholder-gray-500"
+                       required>
+                <button type="submit" 
+                        class="px-8 py-4 bg-black text-white font-bold rounded-full hover:bg-gray-800 transition-colors">
+                    Subscribe
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black border-t border-white/10 pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <div class="col-span-1 md:col-span-2">
+                    <div class="flex flex-col items-start mb-4">
+                        <span class="font-display text-4xl tracking-wider">CROCOS</span>
+                        <span class="crocos-tag text-white/60 mt-1">crocoswear</span>
+                    </div>
+                    <p class="text-gray-400 max-w-sm mb-6">
+                        Elite sportswear for the modern predator. Engineered for performance, designed for dominance.
+                    </p>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white hover:text-black transition-all">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white hover:text-black transition-all">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold mb-4 text-white">Shop</h4>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li><a href="#" class="hover:text-white transition-colors">New Arrivals</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Jackets</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Sport Outfits</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Accessories</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Sale</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold mb-4 text-white">Support</h4>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li><a href="#" class="hover:text-white transition-colors">Help Center</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Size Guide</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Returns</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Shipping</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-gray-500 text-sm">
+                    © 2024 CrocosWear. All rights reserved.
+                </p>
+                <div class="flex items-center gap-2">
+                    <span class="crocos-tag text-white/40">crocoswear</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        function toggleMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('open');
+        }
+
+        // Intersection Observer for fade-up animations
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-up').forEach((el) => observer.observe(el));
+
+        // Parallax effect for hero image
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const heroImage = document.getElementById('heroImage');
+            if (heroImage && scrolled < window.innerHeight) {
+                heroImage.style.transform = `translateY(${scrolled * 0.5}px) scale(1.1)`;
+            }
+        });
+
+        // Magnetic button effect
+        document.querySelectorAll('.magnetic-btn').forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                
+                btn.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
+            });
+            
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = 'translate(0, 0)';
+            });
+        });
+
+        // Navbar background on scroll
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('bg-black/95');
+                navbar.classList.remove('bg-black/80');
+            } else {
+                navbar.classList.add('bg-black/80');
+                navbar.classList.remove('bg-black/95');
+            }
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
